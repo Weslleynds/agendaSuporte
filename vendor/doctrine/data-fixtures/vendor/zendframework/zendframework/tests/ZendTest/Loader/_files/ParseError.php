@@ -17,5 +17,5 @@
  */
 class ParseError
 {
-    parseError;
+    //parseError;
 }

@@ -28,7 +28,7 @@ class Documento
         $qb->execute();
         $em->flush();   
         
-        return ResultSetMapping 
+        return ResultSetMapping; 
     }
     
     public function getEntityManager()
