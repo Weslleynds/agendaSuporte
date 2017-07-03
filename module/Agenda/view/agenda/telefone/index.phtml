@@ -1,0 +1,30 @@
+<?php
+$title = 'Meus Telefones';
+$this->headTitle($title);
+?>
+
+    <div class="panel">
+        <h2><?php echo sprintf($this->translate('%s'.$title.'%s'), '<span class="zf-green">', '</span>') ?></h2>
+        <p><button class="btn btn-default btn-small" id ="addtelefone"  onclick='adicionartelefone();'><?php echo $this->translate('Adicionar novo telefone') ?></button></p>
+     
+        <table class="table table-bordered">
+            <tr>
+                <th>Descricao</th>
+                <th>Numero</th>
+                <th>&nbsp;</th>
+            </tr>
+            <?php foreach ($this->telefones as $telefone) : ?>
+            <tr>
+                <td><?php echo $this->escapeHtml($telefone->getDescricao());?></td>
+                <td><?php echo $this->escapeHtml($telefone->getNumero());?></td>
+                <td>
+                    <?php 
+                    echo "<button class='btn btn-default btn-small' id ='addtelefone'  onclick='editartelefone(".$telefone->getId_Contato().",". $telefone->getId().");'>".$this->translate('Editar telefone')."</button> ";
+                    echo "<button class='btn btn-defaul btn-small' id ='addtelefone'  onclick='deletartelefone(".$telefone->getId_Contato().",". $telefone->getId().");'>".$this->translate('Excluir telefone')."</button>";
+                    ?>
+                   
+                    
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>

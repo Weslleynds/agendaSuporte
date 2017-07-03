@@ -1,0 +1,217 @@
+<?php
+$title = 'Editar Contato';
+$this->headTitle($title);
+?>
+
+
+<div class="panel">
+    <h2><?php echo sprintf($this->translate('%s' . $title . '%s'), '<span class="zf-green">', '</span>') ?></h2>
+
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('contato', array('action' => 'edit', 'id' => $this->id,)));
+    $form->prepare();
+    echo $this->form()->openTag($form);
+    echo $this->formHidden($form->get('id'));
+    echo $this->formRow($form->get('nome'));
+    echo $this->formRow($form->get('empresa'));
+    echo $this->formSubmit($form->get('submit'));
+    echo $this->form()->closeTag();
+    ?>
+</div>
+
+
+<div class="panel-telefone" >
+    <div id="telefone"></div>
+</div>
+
+<div class="modal fade" id="telefone-modal" role="document">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="add-form" name="form-telefone">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title ">
+                        <div id="titulomodaladd">Adicionar telefone</div>
+                        <div id="titulomodaledit">Editar telefone</div>
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="hidden" class="id_telefone form-control" id="id" name="id" value ="">    
+                        <input type="hidden" class="form-control" id="id_contato" name="id_contato" value ="<?php echo $this->id;?>" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="descricao" class="col-sm-2 control-label">Descrição</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="descricao" name="descricao"  required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone" class="col-sm-2 control-label">Telefone</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="numero" name="numero" onkeyup="formatatelefone();" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="botaoadd">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deletetelefone-modal" role="document">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form class="form-horizontal" id="delete-form" name="form-telefone">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Excluir telefone</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Você deseja realmente excluir este telefone?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                    <button type="submit" class="btn btn-primary">Sim</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" language="javascript" class="init">
+    $(document).ready(function() {
+            var id_contato = $('input[name="id"]').val();
+            var id_telefone_form = $('.id_telefone').val();
+            $('#numero').mask('(00)0000-0000');
+            
+            carregatelefone(id_contato);
+            
+            $("#add-form").on("submit", function(event) {
+                id_telefone_form = $('.id_telefone').val();
+                if (id_telefone_form > 0)
+                {   
+                    event.preventDefault();
+                    $.post("/contato/"+id_contato+"/telefone/edit/"+id_telefone_form, $(this).serialize(), function(data) {
+                        removetelefone();
+                        carregatelefone(id_contato);
+                        $('#telefone-modal').modal('hide');
+                        limparform();
+                    }).fail(function() { alert('Não foi possível editar o telefone. Tente novamente mais tarde!'); });
+                
+        
+                }else {
+                    event.preventDefault();
+                    console.log($(this).serialize());
+                    $.post("/contato/"+id_contato+"/telefone/add", $(this).serialize(), function(data) {
+                        removetelefone();
+                        carregatelefone(id_contato);
+                        $('#telefone-modal').modal('hide');
+                        limparform();
+                    }).fail(function() { alert('Não foi possível salvar o telefone. Tente novamente mais tarde!'); });
+                }
+            });
+            
+            $("#telefone-modal").on('hidden.bs.modal', function () {
+                limparform();
+            });
+            
+            $("#deletetelefone-modal").on('hidden.bs.modal', function () {
+                limparform();
+            });
+            
+            $("#delete-form").on("submit", function(event) {
+                id_telefone_form = $('.id_telefone').val();
+                    event.preventDefault();
+                    console.log ($(this).serialize());
+                    $.post("/contato/"+id_contato+"/telefone/delete/"+id_telefone_form, $(this).serialize(), function(data) {
+                        removetelefone();
+                        carregatelefone(id_contato);
+                        $('#deletetelefone-modal').modal('hide');
+                        limparform();
+                    }).fail(function() { alert('Não foi possível excluir o telefone. Tente novamente mais tarde!'); });
+                
+        
+                });
+    });
+    
+    function carregatelefone(id_contato){
+            jQuery(function () {
+                $.ajax({
+                type: "GET",
+                        url: '/contato/' + id_contato + '/telefone/',
+                        success: function (dados) {
+                        $('#telefone').html(dados)
+                        }
+                });
+            })}
+    
+    
+    function removetelefone(){
+    $( "#telefone" ).empty();
+    }
+    
+    function limparform(){
+            var id_contato = $('input[name="id"]').val();
+             $('#add-form').each (function(){
+              $(this).find("input,textarea,select").val('').end();
+            });
+            
+            $('#delete-form').each (function(){
+              $(this).find("input,textarea,select").val('').end();
+            });
+            $('#id_contato').val(id_contato);
+    }
+    
+    function adicionartelefone(){
+                        $('#titulomodaledit').addClass('hidden');
+                        $('#titulomodaladd').removeClass('hidden');                        
+                        $('#telefone-modal').modal('show');
+    }
+    
+    
+    function editartelefone(id_contato,id_telefone){
+                    if ('undefined' != typeof id_telefone && 'undefined' != typeof id_contato) {
+                        $.getJSON('/contato/' + id_contato + '/telefone/edit/' + id_telefone, function(obj) {
+                        var dados = JSON.parse(obj);
+                        $('.id_telefone').val(dados.id);
+                        $('.modal-title addedit').val('Editar Telefone');
+                        $('#titulomodaladd').addClass('hidden');
+                        $('#titulomodaledit').removeClass('hidden');                        
+                        $('#descricao').val(dados.descricao);
+                        $('#numero').val( dados.numero);
+                        $('#telefone-modal').modal('show');
+                        id_telefone_form = dados.id;
+                    }).fail(function() { alert('Não foi possível encontrar o telefone. Tente novamente mais tarde!') });
+                    } else alert('Id não encontrado');
+    }
+    
+    function deletartelefone(id_contato,id_telefone){
+                    if ('undefined' != typeof id_telefone && 'undefined' != typeof id_contato) {
+                        $.getJSON('/contato/' + id_contato + '/telefone/edit/' + id_telefone, function(obj) {
+                        var dados = JSON.parse(obj);
+                        console.log (dados);
+                        $('.id_telefone').val(dados.id);
+                        $('#deletetelefone-modal').modal('show');
+                        id_telefone_form = dados.id;
+                    }).fail(function() { alert('Não foi possível deletar o telefone. Tente novamente mais tarde!') });
+                    } else alert('Id não encontrado');
+    }
+    
+    function formatatelefone(){
+        var numero = $('#numero').val();
+        
+        if (numero.substring(4,5) == 9){
+            $('#numero').mask('(00)00000-0000');
+        }else
+        {
+            $('#numero').mask('(00)0000-0000');
+        }
+        
+    }
+</script>

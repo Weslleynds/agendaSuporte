@@ -1,0 +1,25 @@
+<?php
+	$title = $this->translate("Bem vindo ao Portal do cliente TechSec, ".$this->zfcUserDisplayName()."!");
+	$this->headTitle($title);
+?>
+<div class="techsec-view-content2">
+<div class="view-header-os">
+    <div class="view-os-title">
+        <? echo $title;?>
+    </div>
+</div>
+
+<div class="view-detalhe-os">
+    <br>
+    </p><h4>Abaixos seguem os módulos e suas funcionalidades</h4>
+    <ul >
+        <br>
+        <li><?php echo $this->translate('Alarmes: Possibilita realizar a consulta de alarmes assim como visualizar as providências dos operadores e as gravações relacionadas ao atendimento;') ?></li>
+        <br>
+        <li><?php echo $this->translate('2ª via de boletos / NFSe: Realiza as consulta dos documentos que estão em abertos para que uma segunda via do boleto e NFSe possam ser geradas;') ?></li>
+        <br>
+        <li><?php echo $this->translate('Ordem de Serviço: Permite a abertura e consulta das ordnes de serviço.') ?></li>
+    </ul>
+</div>
+</div>
+

@@ -1,0 +1,32 @@
+{
+<<<<<<< HEAD
+    "name": "doctrine/data-fixtures",
+    "type": "library",
+    "description": "Data Fixtures for all Doctrine Object Managers",
+    "keywords": ["database"],
+    "homepage": "http://www.doctrine-project.org",
+    "license": "MIT",
+    "authors": [
+        {"name": "Jonathan Wage", "email": "jonwage@gmail.com"}
+    ],
+    "require": {
+        "php": ">=5.3.2"
+    },
+    "autoload": {
+        "psr-0": { "Doctrine\\Common\\DataFixtures": "lib/" }
+=======
+    "name": "zendframework/skeleton-application",
+    "description": "Skeleton Application for ZF2",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "framework",
+        "zf2"
+    ],
+    "homepage": "http://framework.zend.com/",
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
+        "doctrine/doctrine-orm-module": "dev-master"
+>>>>>>> 1d08f466b4ad712183cf549eefa3fcf9a6b81afa
+    }
+}

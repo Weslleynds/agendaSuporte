@@ -1,0 +1,69 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php
+            echo $this->headTitle($this->translate('Portal do cliente'))->setSeparator(' - ')->setAutoEscape(false);
+            echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0');
+            
+            //css
+            echo $this->headLink(array(
+                'rel' => 'shortcut icon', 
+                'type' => 'image/vnd.microsoft.icon', 
+                'href' => $this->basePath() . '/images/favicon2.ico'))
+                      ->prependStylesheet($this->basePath() . '/css/login.css')
+                      
+        ?>
+        
+         
+    </head>
+    <body>
+        <div id="conteudo">
+            <div class="header">&nbsp;</div>
+            <div class="logo">
+                <img src="<?php echo $this->basePath().'/images/logo-techsec.png' ?>" >
+                <p>Portal</p>
+            </div>
+            <div class="login">
+               <?php
+                    $form = $this->loginForm;
+                    $form->prepare();
+                    $form->setAttribute('action', $this->url('zfcuser/login'));
+                    $form->setAttribute('method', 'post');
+                ?>
+
+                <?php echo $this->form()->openTag($form) ?>
+
+                    <div class="techsec_form">
+                        <div id="login-error">
+                            <?php echo $this->formElementErrors($form->get('identity')) ?>
+                        </div>
+                        <p>
+                            <label><?php echo $this->formLabel($form->get('identity')) ?></label>
+                            <br /><br /><?php echo $this->formInput($form->get('identity')) ?>
+                            <div class="line-write">&nbsp;</div>
+                        </p>
+                        <p>
+                            <label><?php echo $this->formLabel($form->get('credential')) ?></label>
+                            <br /><br /><?php echo $this->formInput($form->get('credential')) ?>
+                            <div class="line-write">&nbsp;</div>
+                        </p>
+                        <?php if ($this->redirect): ?>
+                            <input type="hidden" name="redirect" value="<?php echo $this->redirect ?>" />
+                        <?php endif ?>
+
+                        <p><?php echo $this->formButton($form->get('submit')) ?></p>
+                    </div>
+
+                <?php echo $this->form()->closeTag() ?>
+
+                <!--
+                <?php if ($this->enableRegistration) : ?>
+                Not registered? <a href="<?php echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Sign up!</a>
+                <?php endif; ?>
+                --> 
+            </div>   
+        </div>
+        <div id="footer">&copy; Techsec Tecnologia. Todos os direitos reservados.</div>
+    </body>
+</html>

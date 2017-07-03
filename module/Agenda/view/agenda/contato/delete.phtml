@@ -1,0 +1,22 @@
+<?php
+$title = 'Deletar contato';
+$this->headTitle($title);
+$url = $this->url('contato', array('action' => 'delete', 'id' => $this->id,));
+?>
+
+    <div class="panel">
+        <h2><?php echo sprintf($this->translate('%s' . $title . '%s'), '<span class="zf-red">', '</span>') ?></h2>
+
+        <p>Você deseja realmente deletar o contato
+            <?php echo $this->escapeHtml($contato->getNome($this->id)); ?> da empresa
+            <?php echo $this->escapeHtml($contato->getEmpresa($this->id)); ?> e seus telefones?
+        </p>
+
+        <form action="<?php echo $url; ?>" method="post">
+            <div>
+                <input type="hidden" name="id" value="<?php echo (int) $this->id; ?>" />
+                <input class="btn btn-danger btn-small" type="submit" name="del" value="Sim" />
+                <input class="btn btn-default btn-small" type="submit" name="del" value="Não" />
+            </div>
+        </form>
+    </div>

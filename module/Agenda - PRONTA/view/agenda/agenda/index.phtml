@@ -1,0 +1,29 @@
+<?php
+
+$title = 'Meus Contatos';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>
+    <a href="<?php echo $this->url('agenda', array('action'=>'add'));?>">Adicionar novo contato</a>
+</p>
+
+<table class="table">
+<tr>
+    <th>Nome</th>
+    <th>Empresa</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($this->agendas as $agenda) : ?>
+<tr>
+    <td><?php echo $this->escapeHtml($agenda->getNome());?></td>
+    <td><?php echo $this->escapeHtml($agenda->getEmpresa());?></td>
+    <td>
+        <a href="<?php echo $this->url('agenda',
+            array('action'=>'edit', 'id' => $agenda->getId()));?>">Editar</a>
+        <a href="<?php echo $this->url('agenda',
+            array('action'=>'delete', 'id' => $agenda->getId()));?>">Excluir</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>

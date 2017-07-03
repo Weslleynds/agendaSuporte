@@ -1,0 +1,27 @@
+<?php
+// module/Album/view/album/album/delete.phtml:
+
+$title = 'Deletar contato';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Você tem certeza que deseja deletar o contato
+    '<?php echo $this->escapeHtml($agenda->getNome($this->id)); ?>' da empresa
+    '<?php echo $this->escapeHtml($agenda->getEmpresa($this->id)); ?>' e seus telefones?
+</p>
+
+<?php
+$url = $this->url('agenda', array(
+    'action' => 'delete',
+    'id' => $this->id,
+        ));
+?>
+
+<form action="<?php echo $url; ?>" method="post">
+    <div>
+        <input type="hidden" name="id" value="<?php echo (int) $this->id; ?>" />
+        <input type="submit" name="del" value="Sim" />
+        <input type="submit" name="del" value="Não" />
+    </div>
+</form
