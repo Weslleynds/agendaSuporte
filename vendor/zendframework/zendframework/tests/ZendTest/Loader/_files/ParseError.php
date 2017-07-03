@@ -17,6 +17,5 @@
  */
 class ParseError
 {
-    echo "teste";
-    echo "develop";
+    //parseError;
 }
